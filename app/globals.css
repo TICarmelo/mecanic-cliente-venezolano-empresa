@@ -1,0 +1,523 @@
+/* ==========================================================================
+   MECANICORP C&J C.A — Sistema de Diseño Industrial de Alta Gama
+   Paleta matizada: grises cálidos, beige técnicos, acentos industriales.
+   Texturas, ruido cinematográfico y lighting dinámico.
+   ========================================================================== */
+
+/* --- Tailwind Directives --- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   1. CAPA BASE — CSS Custom Properties (24 tokens de diseño)
+   ========================================================================== */
+@layer base {
+  :root {
+    /* --- Superficies (Base clara matizada, sin blancos ni negros puros) --- */
+    --surface-primary: #F6F4F0;
+    --surface-alt: #F0EEEB;
+    --surface-light: #F9F7F4;
+    --surface-card: #FFFFFF;
+    --surface-glass: rgba(255, 255, 255, 0.65);
+
+    /* --- Bordes --- */
+    --border-subtle: #E8E3DC;
+    --border-medium: #D5CFC6;
+    --border-active: #D96C1A;
+
+    /* --- Acentos psicológicos --- */
+    --accent-orange: #D96C1A;
+    --accent-orange-glow: rgba(217, 108, 26, 0.3);
+    --accent-blue: #2B7BE4;
+    --accent-blue-glow: rgba(43, 123, 228, 0.3);
+    --accent-olive: #6B8E23;
+    --accent-gold: #C49B5C;
+    --accent-gold-glow: rgba(196, 155, 92, 0.25);
+
+    /* --- Texto --- */
+    --text-primary: #2C2416;
+    --text-secondary: #6B5E4F;
+    --text-muted: #9B8E7B;
+    --text-on-accent: #FFFFFF;
+
+    /* --- Sombras de color (sin negros) --- */
+    --shadow-industrial: 0 8px 40px rgba(200, 170, 140, 0.2);
+    --shadow-industrial-hover: 0 16px 60px rgba(200, 170, 140, 0.35);
+    --shadow-card: 0 4px 24px rgba(44, 36, 22, 0.08);
+    --shadow-card-hover: 0 12px 40px rgba(44, 36, 22, 0.15);
+    --shadow-neon-blue: 0 0 0 2px rgba(43, 123, 228, 0.3);
+    --shadow-neon-orange: 0 0 0 2px rgba(217, 108, 26, 0.3);
+    --shadow-inner-glow: inset 0 0 200px rgba(44, 36, 22, 0.4);
+
+    /* --- Iluminación dinámica (actualizado vía JS) --- */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --scroll-light-y: 50%;
+
+    /* --- Radios --- */
+    --radius-industrial: 4px;
+    --radius-card: 12px;
+    --radius-button: 6px;
+
+    /* --- Tipografía --- */
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* --- Escala fluida --- */
+    --text-hero: clamp(2.8rem, 8vw, 6.5rem);
+    --text-h2: clamp(2rem, 5vw, 3.5rem);
+    --text-h3: clamp(1.5rem, 3vw, 2.2rem);
+    --text-subtitle: clamp(1.2rem, 2.5vw, 1.8rem);
+    --text-body: 1rem;
+    --text-body-lg: 1.125rem;
+    --text-small: 0.875rem;
+
+    /* --- Espaciado --- */
+    --space-section: clamp(4rem, 10vh, 8rem);
+    --space-section-sm: clamp(2rem, 6vh, 5rem);
+    --space-card-padding: clamp(1.5rem, 3vw, 2.5rem);
+
+    /* --- Transiciones --- */
+    --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* --- Reset & Base --- */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--surface-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* Textura base: gradiente sutil que simula iluminación natural */
+    /*
+     * Fondo Luminoso de Precisión — Elegancia técnica industrial.
+     * Base: blanco titanio con haces de luz difusa y acentos
+     * azul-acero y cobre ultradiluidos. Sin oscuridad, sin crema.
+     * Evoca un laboratorio de metrología iluminado cenitalmente.
+     */
+    background:
+      /* Haz de luz cenital principal */
+      radial-gradient(ellipse 100% 55% at 50% 0%, rgba(255,255,255,0.85) 0%, transparent 50%),
+      /* Acento azul-acero diluido — precisión (derecha) */
+      radial-gradient(ellipse 55% 40% at 75% 35%, rgba(43,123,228,0.06) 0%, transparent 55%),
+      /* Acento cobre diluido — calor técnico (izquierda) */
+      radial-gradient(ellipse 50% 35% at 22% 45%, rgba(217,108,26,0.07) 0%, transparent 50%),
+      /* Brillo inferior — luz rebotada */
+      radial-gradient(ellipse 80% 40% at 50% 100%, rgba(245,243,240,0.6) 0%, transparent 50%),
+      /* Gradiente base — blanco titanio con micro-variación */
+      linear-gradient(
+        175deg,
+        #F8F7F5 0%,
+        #F0EEEB 7%,
+        #F5F3F0 14%,
+        #EDEBE8 21%,
+        #F3F1EE 28%,
+        #EFEDEA 35%,
+        #F6F4F1 42%,
+        #ECEAE7 49%,
+        #F2F0ED 56%,
+        #EEECE9 63%,
+        #F4F2EF 70%,
+        #EBE9E6 77%,
+        #F1EFEC 84%,
+        #EDEBE8 91%,
+        #F3F1EE 100%
+      );
+    background-attachment: fixed;
+    background-color: #F3F1EE;
+  }
+
+  /* --- Tipografía base --- */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  a:hover {
+    color: var(--accent-orange);
+  }
+
+  /* --- Selección --- */
+  ::selection {
+    background: rgba(217, 108, 26, 0.2);
+    color: var(--text-primary);
+  }
+
+  /* --- Scrollbar personalizada --- */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--surface-alt);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-orange);
+  }
+
+  /* --- Focus visible para accesibilidad --- */
+  :focus-visible {
+    outline: 2px solid var(--accent-orange);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ==========================================================================
+   2. CAPA COMPONENTES — Utilidades reutilizables
+   ========================================================================== */
+@layer components {
+  /* --- Glassmorphism industrial --- */
+  .glass {
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px) saturate(1.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .glass-heavy {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* --- Tarjeta industrial --- */
+  .card-industrial {
+    background: var(--surface-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-industrial);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  }
+
+  .card-industrial:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-industrial-hover);
+    border-color: var(--border-active);
+  }
+
+  /* --- Ruido cinematográfico (overlay) --- */
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* --- Gradiente de luz de taller (dinámico vía CSS custom properties) --- */
+  .workshop-light {
+    background: radial-gradient(
+      ellipse 800px 600px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(217, 108, 26, 0.08) 0%,
+      transparent 60%
+    );
+    transition: background 0.3s ease-out;
+  }
+
+  /* --- Textura de metal cepillado --- */
+  .metal-brushed {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(200, 170, 140, 0.06) 2px,
+      rgba(200, 170, 140, 0.06) 4px
+    );
+  }
+
+  /* --- Borde activo animado (efecto brillo naranja móvil) --- */
+  .border-glow {
+    position: relative;
+  }
+
+  .border-glow::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0%,
+      rgba(217, 108, 26, 0.3) 25%,
+      transparent 50%,
+      rgba(196, 155, 92, 0.25) 75%,
+      transparent 100%
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .border-glow:hover::after {
+    opacity: 1;
+  }
+
+  /* --- Overlay de óxido (esquinas de tarjetas) --- */
+  .rust-corners {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rust-corners::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(
+      circle at 100% 0%,
+      rgba(160, 82, 45, 0.06) 0%,
+      rgba(200, 125, 74, 0.04) 30%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .rust-corners::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(
+      circle at 0% 100%,
+      rgba(160, 82, 45, 0.05) 0%,
+      rgba(200, 125, 74, 0.03) 30%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* --- Gradiente de botón industrial --- */
+  .btn-gradient {
+    background: linear-gradient(135deg, var(--accent-orange) 0%, #C45A10 100%);
+    background-size: 100% 100%;
+    transition: background-size var(--transition-slow), box-shadow var(--transition-base);
+  }
+
+  .btn-gradient:hover {
+    background-size: 150% 150%;
+    box-shadow: 0 8px 30px rgba(217, 108, 26, 0.35);
+  }
+
+  /* --- Subrayado con degradado naranja-azul --- */
+  .gradient-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .gradient-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-orange) 0%, var(--accent-blue) 100%);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gradient-underline.active::after {
+    transform: scaleX(1);
+  }
+
+  /* --- HUD monoespaciado --- */
+  .hud-text {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(43, 123, 228, 0.7);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* --- Chip/Badge industrial --- */
+  .badge-industrial {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    font-size: var(--text-small);
+    font-weight: 500;
+    font-family: var(--font-body);
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-light);
+    color: var(--text-secondary);
+  }
+
+  /* --- Línea animada al hacer scroll --- */
+  .animated-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-orange) 50%, transparent 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .animated-line.visible {
+    transform: scaleX(1);
+  }
+
+  /* --- Vignette cinematográfica --- */
+  .vignette {
+    position: relative;
+  }
+
+  .vignette::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 200px rgba(44, 36, 22, 0.35);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* --- Texto con efecto de máscara deslizante --- */
+  .text-reveal {
+    clip-path: inset(0 100% 0 0);
+    animation: text-reveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  }
+
+  @keyframes text-reveal {
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* --- Línea de tiempo SVG animada --- */
+  .svg-timeline {
+    stroke: var(--accent-orange);
+    stroke-width: 2;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 0.8s ease-in-out;
+  }
+
+  .svg-timeline.animate {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ==========================================================================
+   3. CAPA UTILIDADES — Overrides y personalizaciones
+   ========================================================================== */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Perspective para efectos 3D */
+  .perspective-800 {
+    perspective: 800px;
+  }
+
+  .perspective-1200 {
+    perspective: 1200px;
+  }
+
+  /* Preserve 3D */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  /* Backface visibility */
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+/* ==========================================================================
+   4. ANIMACIONES GLOBALES ADICIONALES
+   ========================================================================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 30s linear infinite;
+}
